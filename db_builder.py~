@@ -23,7 +23,7 @@ c.execute(q)    #run SQL query
 fObj = open("courses.csv") 
 d = csv.DictReader(fObj)
 for k in d:
-    p = 'INSERT INTO courses VALUES ("' + k['code'] +  '", "' + k['id'] +  '", "' + k['mark'] + '" )'
+    p = 'INSERT INTO courses VALUES ("' + k['code'] +  '", "' + k['mark'] +  '", "' + k['id'] + '" )'
     c.execute(p)
 
 #==========================================================
