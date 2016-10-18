@@ -1,3 +1,8 @@
+# Alan Chen
+# SoftDev pd8
+# HW08: Average
+# 2016-10-18
+
 import sqlite3   #enable control of an sqlite database
 import csv       #facilitates CSV I/O
 
@@ -6,26 +11,43 @@ f="discobandit.db"
 db = sqlite3.connect(f) #open if f exists, otherwise create
 c = db.cursor()    #facilitate db ops
 
-#==========================================================
-#INSERT YOUR POPULATE CODE IN THIS ZONE
-#...perhaps by beginning with these examples...
+#==================== TABLE CREATION ======================
+
+#----- INSERTING STUDENTS ---------------------------------
 
 q = "CREATE TABLE students (name TEXT, age INTEGER, id INTEGER)"
 c.execute(q)    #run SQL query
-fObj = open("peeps.csv") 
-d = csv.DictReader(fObj)
-for k in d:
-    p = 'INSERT INTO students VALUES ("' + k['name'] +  '", "' + k['age'] +  '", "' + k['id'] + '" )'
+
+csv_peeps = open("peeps.csv") 
+csv_contents = csv.DictReader(csv_peeps)
+
+for record in csv_contents:
+    p = 'INSERT INTO students VALUES ("' + record['name'] +  '", "' \
+        + record['age'] +  '", "' + record['id'] + '" )'
     c.execute(p)
+
+#----- INSERTING COURSES ----------------------------------
 
 q = "CREATE TABLE courses (code TEXT, mark INTEGER, id INTEGER)"
 c.execute(q)    #run SQL query
-fObj = open("courses.csv") 
-d = csv.DictReader(fObj)
-for k in d:
-    p = 'INSERT INTO courses VALUES ("' + k['code'] +  '", "' + k['mark'] +  '", "' + k['id'] + '" )'
-    c.execute(p)
 
+csv_courses = open("courses.csv") 
+csv_contents = csv.DictReader(csv_courses)
+
+for record in csv_contents:
+    p = 'INSERT INTO courses VALUES ("' + record['code'] +  '", "' \
+        + record['mark'] +  '", "' + record['id'] + '" )'
+    c.execute(p)
+#==================== END TABLE CREATION ==================
+
+
+#==================== FUN STUFF XP ===============
+q = "SELECT students.id, name, code,  mark FROM courses, students WHERE students.id = courses.id"
+c.execute(q)
+
+raw_data = c.fetchall()
+
+print raw_data
 #==========================================================
 db.commit() #save changes
 db.close()  #close database
