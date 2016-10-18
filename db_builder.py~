@@ -18,7 +18,7 @@ for k in d:
     p = 'INSERT INTO students VALUES ("' + k['name'] +  '", "' + k['age'] +  '", "' + k['id'] + '" )'
     c.execute(p)
 
-q = "CREATE TABLE courses (code TEXT, id INTEGER, mark INTEGER)"
+q = "CREATE TABLE courses (code TEXT, mark INTEGER, id INTEGER)"
 c.execute(q)    #run SQL query
 fObj = open("courses.csv") 
 d = csv.DictReader(fObj)
