@@ -42,12 +42,23 @@ for record in csv_contents:
 
 
 #==================== FUN STUFF XP ===============
-q = "SELECT students.id, name, code,  mark FROM courses, students WHERE students.id = courses.id"
-c.execute(q)
 
-raw_data = c.fetchall()
+roster = dict()
+cap = 10 #HARDCODED FOR TESTING
+while cap > 0:
+    q = "SELECT AVG(mark) FROM courses WHERE id=" + str(cap)
+    c.execute(q)
+    avg_grade = c.fetchall()
 
-print raw_data
+    q = "SELECT name FROM students WHERE id=" + str(cap)
+    c.execute(q)
+    name = c.fetchall()
+
+    roster[cap] = [name, avg_grade]
+    cap -= 1
+
+for student in roster:
+    print student, roster[student]
 #==========================================================
 db.commit() #save changes
 db.close()  #close database
