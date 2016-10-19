@@ -1,5 +1,5 @@
-# Team DasMeme -- Alan Chen, Jason Mohabir, Haley Zeng
-# SoftDev pd8
+# Team DasMeme: Alan Chen, Jason Mohabir, Haley Zeng
+# Softdev pd8
 # HW08 -- Average
 # 2016-10-18
 
@@ -11,23 +11,31 @@ f="discobandit.db"
 db = sqlite3.connect(f) #open if f exists, otherwise create
 c = db.cursor()    #facilitate db ops
 
+#==================== STUDENT'S AVERAGES ===============
 
-roster = dict()
-cap = 10
-while cap > 0:
-    q = "SELECT AVG(mark) FROM courses WHERE id=" + str(cap)
+def averageGrades(ID):
+    q = "SELECT mark FROM courses WHERE id = '%s'" % (ID)
     c.execute(q)
-    avg_grade = c.fetchone()[0]
+    grades = c.fetchall() #grades is a list of tuples
+    summ = 0.0 #avoid integer division
+    count = 0;
+    for grade in grades: #grade is a tuple
+        summ += grade[0] #get the mark from the tuple
+        count += 1
+    return summ / count
 
-    q = "SELECT name FROM students WHERE id=" + str(cap)
-    c.execute(q)
-    name = c.fetchone()[0]
+#================== DISPLAYING STUDENT DATA  ===============
 
-    roster[cap] = [name, avg_grade]
-    cap -= 1
+q = "SELECT name, id FROM students"
+c.execute(q)
+people = c.fetchall()
 
-for ID in roster:
-    print roster[ID][0], ID, roster[ID][1]
+for person in people:
+    name = person[0]
+    ID = person[1]
+    avg = averageGrades(ID)
+    print name, ID, avg
+
 
 db.commit() #save changes
 db.close()  #close database
